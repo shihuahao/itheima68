@@ -33,6 +33,9 @@
 	<!-- 商品规格服务 -->
 	<dubbo:reference id="itemParamService"
 		interface="cn.e3.manager.service.ItemParamService" timeout="1000000" retries="2"/>
-
+	<!-- 广告分类服务 -->
+	<dubbo:reference id="contentCategoryService"
+		interface="cn.e3.content.service.ContentCategoryService" timeout="1000000" retries="2"/>
+	
 
 </beans>

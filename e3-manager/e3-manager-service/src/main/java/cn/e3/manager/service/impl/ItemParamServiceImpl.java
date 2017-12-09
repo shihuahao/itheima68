@@ -33,9 +33,10 @@ public class ItemParamServiceImpl implements ItemParamService {
 		//在查询之前，设置分页
 		PageHelper.startPage(page, rows);
 		//查询
-		List<TbItemParam> list = itemParamMapper.findAll(itemParamExample);
+		List<TbItemParam> list = itemParamMapper.selectByExampleWithBLOBs(itemParamExample);
+		
 		//创建PageInfo,分页插件PageInfo对象封装了所有的分页信息
-		PageInfo<TbItemParam> pageInfo = new PageInfo<>(list);
+		PageInfo<TbItemParam> pageInfo = new PageInfo<TbItemParam>(list);
 		
 		//创建DatagridPagebean对象
 		DatagridPagebean pagebean = new DatagridPagebean();

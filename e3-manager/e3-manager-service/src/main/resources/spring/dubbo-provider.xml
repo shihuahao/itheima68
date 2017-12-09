@@ -39,5 +39,12 @@
 	<!-- 发布服务 -->
 	<dubbo:service interface="cn.e3.manager.service.ItemCatService"
 		ref="itemCatServiceImpl" />
+		
+	<!-- 创建需要发布对象 -->
+	<!-- 商品规格 -->
+	<bean id="itemParamServiceImpl" class="cn.e3.manager.service.impl.ItemParamServiceImpl"></bean>
+	<!-- 发布服务 -->
+	<dubbo:service interface="cn.e3.manager.service.ItemParamService"
+		ref="itemParamServiceImpl" />
 
 </beans>

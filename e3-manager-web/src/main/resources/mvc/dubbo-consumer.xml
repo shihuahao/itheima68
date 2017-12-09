@@ -30,6 +30,9 @@
 	<!-- 商品类别服务 -->
 	<dubbo:reference id="itemCatService"
 		interface="cn.e3.manager.service.ItemCatService" timeout="1000000" retries="2"/>
+	<!-- 商品规格服务 -->
+	<dubbo:reference id="itemParamService"
+		interface="cn.e3.manager.service.ItemParamService" timeout="1000000" retries="2"/>
 
 
 </beans>

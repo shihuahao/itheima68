@@ -3,13 +3,16 @@ package cn.e3.manager.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.e3.manager.service.ItemService;
 import cn.e3.pojo.TbItem;
+import cn.e3.pojo.TbItemDesc;
 import cn.e3.utils.DatagridPagebean;
+import cn.e3.utils.E3mallResult;
 
 @Controller
 public class ItemController {
@@ -44,5 +47,19 @@ public class ItemController {
 		//远程调用service服务方法
 		DatagridPagebean pagebean = itemService.findItemListByPage(page, rows);
 		return pagebean;
+	}
+	
+	/**
+	 * 需求：保存商品
+	 * 请求：/item/save
+	 * 参数：TbItem item,TbItemDesc itemDesc,TbItemPraram praram
+	 * 返回值：json格式的E3mallResult
+	 */
+	@RequestMapping("/item/save")
+	@ResponseBody
+	public E3mallResult saveItem(TbItem item, TbItemDesc itemDesc){
+		//调用远程service服务方法
+		E3mallResult e3mallResult = itemService.saveItem(item, itemDesc);
+		return e3mallResult;
 	}
 }

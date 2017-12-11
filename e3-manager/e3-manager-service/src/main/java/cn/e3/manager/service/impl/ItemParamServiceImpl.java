@@ -12,7 +12,9 @@ import cn.e3.manager.service.ItemParamService;
 import cn.e3.mapper.TbItemParamMapper;
 import cn.e3.pojo.TbItemParam;
 import cn.e3.pojo.TbItemParamExample;
+import cn.e3.pojo.TbItemParamExample.Criteria;
 import cn.e3.utils.DatagridPagebean;
+import cn.e3.utils.E3mallResult;
 
 @Service
 public class ItemParamServiceImpl implements ItemParamService {
@@ -46,6 +48,31 @@ public class ItemParamServiceImpl implements ItemParamService {
 		pagebean.setTotal(pageInfo.getTotal());
 		
 		return pagebean;
+	}
+
+	/**
+	 * 需求：根据分类id查询商品的规格模板
+	 * 参数：Long dategoryId
+	 * 返回值：E3MallResult.ok(ItemParam)
+	 */
+	@Override
+	public E3mallResult findItemParamByDategoryId(Long dategoryId) {
+		//创建example对象
+		TbItemParamExample example = new TbItemParamExample();
+		//创建criteria对象
+		Criteria criteria = example.createCriteria();
+		//添加条件
+		criteria.andItemCatIdEqualTo(dategoryId);
+		//调用mapper接口方法
+		List<TbItemParam> list = itemParamMapper.selectByExampleWithBLOBs(example);
+		
+		TbItemParam itemParam = null;
+		
+		//判断此分类是否关联了模板
+		if(list!=null && list.size()>0){
+			itemParam=list.get(0);
+		}
+		return E3mallResult.ok(itemParam);
 	}
 
 }

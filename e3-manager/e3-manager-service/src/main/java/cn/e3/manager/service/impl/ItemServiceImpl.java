@@ -12,9 +12,11 @@ import com.github.pagehelper.PageInfo;
 import cn.e3.manager.service.ItemService;
 import cn.e3.mapper.TbItemDescMapper;
 import cn.e3.mapper.TbItemMapper;
+import cn.e3.mapper.TbItemParamItemMapper;
 import cn.e3.pojo.TbItem;
 import cn.e3.pojo.TbItemDesc;
 import cn.e3.pojo.TbItemExample;
+import cn.e3.pojo.TbItemParamItem;
 import cn.e3.utils.DatagridPagebean;
 import cn.e3.utils.E3mallResult;
 import cn.e3.utils.IDUtils;
@@ -24,8 +26,12 @@ public class ItemServiceImpl implements ItemService {
 	//注入商品mapper接口代理对象
 	@Autowired
 	private TbItemMapper itemMapper;
+	//注入商品描述mapper接口代理对象
 	@Autowired
 	private TbItemDescMapper tbItemDescMapper;
+	//注入商品规格mapper接口代理对象
+	@Autowired
+	private TbItemParamItemMapper itemParamItemMapper;
 
 	/**
 	 * 需求:根据id查询商品数据
@@ -72,7 +78,7 @@ public class ItemServiceImpl implements ItemService {
 	 * 返回值：E3mallResult
 	 */
 	@Override
-	public E3mallResult saveItem(TbItem item, TbItemDesc itemDesc) {
+	public E3mallResult saveItem(TbItem item, TbItemDesc itemDesc, String itemParams) {
 		//生成id
 		long itemId = IDUtils.genItemId();
 		item.setId(itemId);
@@ -90,6 +96,16 @@ public class ItemServiceImpl implements ItemService {
 		itemDesc.setCreated(date);
 		itemDesc.setUpdated(date);
 		tbItemDescMapper.insert(itemDesc);
+		
+		//创建商品规格对象
+		TbItemParamItem itemParamItem = new TbItemParamItem();
+		itemParamItem.setItemId(itemId);
+		itemParamItem.setParamData(itemParams);
+		itemParamItem.setCreated(date);
+		itemParamItem.setUpdated(date);
+		
+		//保存商品规格参数
+		itemParamItemMapper.insertSelective(itemParamItem);
 		
 		return E3mallResult.ok();
 	}

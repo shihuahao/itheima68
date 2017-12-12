@@ -36,6 +36,9 @@
 	<!-- 广告分类服务 -->
 	<dubbo:reference id="contentCategoryService"
 		interface="cn.e3.content.service.ContentCategoryService" timeout="1000000" retries="2"/>
+	<!-- 广告内容服务 -->
+	<dubbo:reference id="contentService"
+		interface="cn.e3.content.service.ContentService" timeout="1000000" retries="2"/>
 	
 
 </beans>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.e3.content.service.ContentCategoryService;
+import cn.e3.utils.E3mallResult;
 import cn.e3.utils.TreeNode;
 
 @Controller
@@ -31,4 +32,19 @@ public class ContentCategoryController {
 		List<TreeNode> list = contentCategoryService.findContentCategoryTreeNodeList(parentId);
 		return list;
 	}
+	
+	/**
+	 * 需求：添加子节点
+	 * 请求：/content/category/create
+	 * 参数：Long parentId, String name
+	 * 返回值：json格式E3mallResult
+	 */
+	@RequestMapping("/content/category/create")
+	@ResponseBody
+	public E3mallResult createNode(Long parentId, String name){
+		//调用service远程服务方法
+		E3mallResult e3mallResult = contentCategoryService.createNode(parentId, name);
+		return e3mallResult;
+	}
+	
 }

@@ -25,8 +25,8 @@
 	<dubbo:registry address="zookeeper://192.168.213.129:2181" />
 	
 	<!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
-	<!-- <dubbo:reference id="itemService"
-		interface="cn.e3.manager.service.ItemService" timeout="1000000" retries="2"/> -->
+	<dubbo:reference id="ContentService"
+		interface="cn.e3.content.service.ContentService" timeout="1000000" retries="2"/>
 
 
 </beans>

@@ -6,7 +6,9 @@ import java.util.List;
 
 import javax.swing.border.EmptyBorder;
 
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.weaver.patterns.ExactAnnotationFieldTypePattern;
+import org.jboss.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -14,6 +16,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import cn.e3.jedis.dao.JedisDao;
 import cn.e3.mapper.TbContentMapper;
 import cn.e3.pojo.TbContent;
 import cn.e3.pojo.TbContentExample;
@@ -21,6 +24,7 @@ import cn.e3.pojo.TbContentExample.Criteria;
 import cn.e3.utils.AdItem;
 import cn.e3.utils.DatagridPagebean;
 import cn.e3.utils.E3mallResult;
+import cn.e3.utils.JsonUtils;
 
 @Service
 public class ContentServiceImpl implements ContentService {
@@ -41,6 +45,14 @@ public class ContentServiceImpl implements ContentService {
 	
 	@Value("${HEIGHTB}")
 	private Integer HEIGHTB;
+	
+	//注入首页缓存唯一标识
+	@Value("${INDEX_CACHE}")
+	private String INDEX_CACHE;
+	
+	//注入jedisDao对象
+	@Autowired
+	private JedisDao jedisDao;
 
 	/**
 	 * 需求：根据外键查询此节点列表 
@@ -74,9 +86,15 @@ public class ContentServiceImpl implements ContentService {
 	 * 需求：创建广告内容数据
 	 * 参数：TbContent content
 	 * 返回值：E3mallResult
+	 * 删除，修改，添加广告数据时先删除缓存
+	 * 用户再次查询，缓存已经不存在了，需要从新数据库查询新的数据
+	 * 从而达到缓存同步目的
 	 */
 	@Override
 	public E3mallResult createContent(TbContent content) {
+		//先删除缓存
+		jedisDao.hdel(INDEX_CACHE, content.getCategoryId()+"");
+		
 		//补全参数
 		Date date = new Date();
 		content.setCreated(date);
@@ -87,12 +105,38 @@ public class ContentServiceImpl implements ContentService {
 	}
 
 	/**
-	 * 初始化大广告位数据
+	 * 查询首页加载广告数据
 	 * @param categoryId
 	 * @return List<AdItem>
+	 * 首页，获取其他广告页面加载广告数据是从数据库中查询，为了减轻数据库压力，给广告服务添加缓存
+	 * 广告数据查询时，首先先查询redis缓存，如果缓存中有数据，直接返回即可，否则再次查询数据库
+	 * 但同时，把查询的数据库数据放入缓存
+	 * redis缓存服务器数据库结构：
+	 * 缓存的数据结构：hash
+	 * key：INDEX_CACHE（首页缓存） FOOD_CACHE（食品页面缓存）
+	 * field：categoryId（缓存分类）
+	 * value：json（缓存数据）
+	 * 缓存流程：
+	 * 1，先查询缓存，如果有缓存，直接返回，不再查询数据库
+	 * 2，如果缓存不存在，查询数据库，同时需要把查询的数据放入缓存
 	 */
 	@Override
 	public List<AdItem> findContentAdList(Long categoryId) {
+		
+		try {
+			//先查询缓存
+			String AdJson = jedisDao.hget(INDEX_CACHE, categoryId+"");
+			//判断redis中是否存在缓存
+			if(StringUtils.isNotBlank(AdJson)){
+				//把广告json字符串数据转换成集合对象，返回
+				List<AdItem> adList = JsonUtils.jsonToList(AdJson, AdItem.class);
+				
+				return adList;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		//创建广告数据封装集合对象
 		ArrayList<AdItem> adList = new ArrayList<AdItem>();
 		
@@ -124,6 +168,9 @@ public class ContentServiceImpl implements ContentService {
 			//把广告对象添加到广告集合
 			adList.add(ad);
 		}
+		
+		//放入 缓存,当其他用户查询广告数据的时候，查询缓存数据
+		jedisDao.hset(INDEX_CACHE, categoryId+"", JsonUtils.objectToJson(adList));
 		
 		return adList;
 	}

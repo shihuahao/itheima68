@@ -17,7 +17,7 @@
 	http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
 	<!-- 1,扫描service层 -->
-	<context:component-scan base-package="cn.e3.content.service"></context:component-scan>
+	<context:component-scan base-package="cn.e3"></context:component-scan>
 	<!-- 2,配置事物 -->
 	<!-- 2-1: 事物管理平台 -->
 	<bean id="transactionManager"

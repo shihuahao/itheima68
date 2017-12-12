@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:include page="${pageContext.request.contextPath }/layout/inc.jsp"></jsp:include>
 <div>
 	 <a class="easyui-linkbutton" onclick="importItems()">一键导入商品数据到索引库</a>
 </div>

@@ -34,5 +34,11 @@
 	<dubbo:service interface="cn.e3.content.service.ContentCategoryService"
 		ref="contentCategoryServiceImpl" />
 		
+	<!-- 创建需要发布对象 -->
+	<!-- 发布广告内容服务 -->
+	<bean id="contentServiceImpl" class="cn.e3.content.service.ContentServiceImpl"></bean>
+	<!-- 发布服务 -->
+	<dubbo:service interface="cn.e3.content.service.ContentService"
+		ref="contentServiceImpl" />
 
 </beans>

@@ -3,6 +3,8 @@ package cn.e3.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class TbItem implements Serializable{
     private Long id;
 
@@ -25,8 +27,22 @@ public class TbItem implements Serializable{
     private Date created;
 
     private Date updated;
+    
+    //定义images属性
+    private String[] images;
 
-    public Long getId() {
+    public String[] getImages() {
+    	if(StringUtils.isNotBlank(image)){
+    		images = image.split(",");
+    	}
+		return images;
+	}
+
+	public void setImages(String[] images) {
+		this.images = images;
+	}
+
+	public Long getId() {
         return id;
     }
 

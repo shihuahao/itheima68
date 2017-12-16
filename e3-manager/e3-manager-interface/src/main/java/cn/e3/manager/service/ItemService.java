@@ -25,4 +25,11 @@ public interface ItemService {
 	 * 返回值：E3mallResult
 	 */
 	public E3mallResult saveItem(TbItem item, TbItemDesc itemDesc, String itemParams);
+
+	/**
+	 * 需求：根据Id查询商品描述
+	 * @param itemId
+	 * @return
+	 */
+	public TbItemDesc findItemDescById(Long itemId);
 }

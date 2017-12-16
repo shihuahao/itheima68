@@ -18,20 +18,13 @@
 	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-4.0.xsd">
-	<!-- 定义dubbo服务名称,此名称可以自定义,用于监控中心监控服务关系 -->
-	<dubbo:application name="manager-service" />
-	
-	<!-- 使用dubbo通过Zookeeper协议注册服务 -->
-	<dubbo:registry protocol="zookeeper" address="192.168.213.129:2181" />
-	
-	<!-- 用dubbo协议在20880端口暴露服务 -->
-	<dubbo:protocol name="dubbo" port="20882" />
-	
-	<!-- 声明需要暴露的服务接口 -->
-	<!-- 创建需要发布对象 -->
-	<bean id="searchItemServiceImpl" class="cn.e3.search.service.impl.SearchItemServiceImpl"></bean>
-	<!-- 发布服务 -->
-	<dubbo:service interface="cn.e3.search.service.SearchItemService"
-		ref="searchItemServiceImpl" />
-
+	<!-- 把solr服务交给spring管理 -->
+	<bean class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+		<constructor-arg name="baseURL" value="http://192.168.213.129:8080/solr/item"></constructor-arg>
+	</bean>
+	<!-- 把集群对象交给spring管理 -->
+	<!-- <bean class="org.apache.solr.client.solrj.impl.CloudSolrServer">
+		<constructor-arg name="zkHost" value="192.168.213.129:2182,192.168.213.129:2183,192.168.213.129:2184"></constructor-arg>
+		<property name="defaultCollection" value="item"></property>
+	</bean> -->
 </beans>

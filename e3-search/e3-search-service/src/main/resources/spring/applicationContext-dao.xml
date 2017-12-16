@@ -27,11 +27,11 @@
 	<!-- 2,sqlSessionFactory工厂 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
-		<property name="typeAliasesPackage" value="cn.e3.pojo"></property>
+		<property name="typeAliasesPackage" value="cn.e3.pojo,cn.e3.search.pojo"></property>
 		<property name="configLocation" value="classpath:config/sqlMapConfig.xml"></property>
 	</bean>
 	<!-- 3,扫描接口代理开发配置 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="cn.e3.mapper"></property>
+		<property name="basePackage" value="cn.e3.mapper,cn.e3.search.mapper"></property>
 	</bean>
 </beans>

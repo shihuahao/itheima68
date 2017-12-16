@@ -10,14 +10,14 @@
 	http://www.springframework.org/schema/aop 
 	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
 	http://www.springframework.org/schema/tx 
-	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/tx/spring-tx.xsd
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
 	<!-- 1,扫描service层 -->
-	<context:component-scan base-package="cn.e3.search.service"></context:component-scan>
+	<context:component-scan base-package="cn.e3.search"></context:component-scan>
 	<!-- 2,配置事物 -->
 	<!-- 2-1: 事物管理平台 -->
 	<bean id="transactionManager"

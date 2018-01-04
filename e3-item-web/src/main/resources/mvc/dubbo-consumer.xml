@@ -28,4 +28,8 @@
 	<dubbo:reference id="itemService"
 		interface="cn.e3.manager.service.ItemService" timeout="1000000" retries="2"/>
 
+	<!-- 规格参数服务 -->
+	<dubbo:reference id="itemParamItemService"
+		interface="cn.e3.manager.service.ItemParamItemService" timeout="1000000" retries="2"/>
+		
 </beans>

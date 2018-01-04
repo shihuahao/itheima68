@@ -5,10 +5,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.e3.manager.service.ItemParamItemService;
+import cn.e3.manager.service.ItemParamService;
 import cn.e3.manager.service.ItemService;
 import cn.e3.pojo.TbItem;
 import cn.e3.pojo.TbItemDesc;
+import cn.e3.utils.E3mallResult;
 
 @Controller
 public class ItemDetailController {
@@ -16,6 +20,10 @@ public class ItemDetailController {
 	//注入商品服务对象
 	@Autowired
 	private ItemService itemService;
+	
+	//注入商品规格参数服务对象
+	@Autowired
+	private ItemParamItemService ItemParamItemService;
 
 	/**
 	 * 需求：进入商品详情页面
@@ -38,5 +46,30 @@ public class ItemDetailController {
 		model.addAttribute("itemDesc", itemDesc);
 		
 		return "item";
+	}
+	
+	/**
+	 * 需求：查询商品描述信息
+	 * 请求：/item/desc/{itemId}
+	 * 返回值：TbItemDesc
+	 */
+	@RequestMapping("/item/desc/{itemId}")
+	@ResponseBody
+	public TbItemDesc findItemDesc(@PathVariable Long itemId){
+		TbItemDesc itemDesc = itemService.findItemDescById(itemId);
+		return itemDesc;
+	}
+	
+	/**
+	 * 需求：查询商品规格信息
+	 * 请求：/item/param/{itemId}
+	 */
+	@RequestMapping("/item/param/{itemId}")
+	@ResponseBody
+	public E3mallResult findItemParamItem(@PathVariable Long itemId){
+		//调用远程服务方法
+		E3mallResult result = ItemParamItemService.findItemParamItemByItemId(itemId);
+		
+		return result;
 	}
 }

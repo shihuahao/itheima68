@@ -67,4 +67,10 @@ public class ClusterJedisDaoImpl implements JedisDao {
 		return ttl;
 	}
 
+	@Override
+	public Long del(String key) {
+		Long del = jc.del(key);
+		return del;
+	}
+
 }

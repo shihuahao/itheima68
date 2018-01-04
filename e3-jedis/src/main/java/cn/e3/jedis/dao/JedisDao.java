@@ -7,6 +7,7 @@ public interface JedisDao {
 	//String
 	public String set(String key, String value);
 	public String get(String key);
+	public Long del(String key);
 	//自增
 	public Long incr(String key);
 	//自减

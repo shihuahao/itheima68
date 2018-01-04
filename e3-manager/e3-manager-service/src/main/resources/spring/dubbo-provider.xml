@@ -46,5 +46,11 @@
 	<!-- 发布服务 -->
 	<dubbo:service interface="cn.e3.manager.service.ItemParamService"
 		ref="itemParamServiceImpl" />
+		
+	<!-- 商品参数 -->
+	<bean id="itemParamItemServiceImpl" class="cn.e3.manager.service.impl.ItemParamItemServiceImpl"></bean>
+	<!-- 发布服务 -->
+	<dubbo:service interface="cn.e3.manager.service.ItemParamItemService"
+		ref="itemParamItemServiceImpl" />
 
 </beans>

@@ -64,7 +64,6 @@ public class SearchItemServiceImpl implements SearchItemService {
 			}
 			//提交
 			solrServer.commit();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
